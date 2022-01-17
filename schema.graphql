@@ -3,7 +3,8 @@
 
 
 type Mutation {
-  addProduct(image: String!, name: String!, price: String!): Product!
+  createProduct(image: String!, name: String!, price: String!): Product!
+  destroyProduct(id: Int!): Product!
 }
 
 type Product {
@@ -14,5 +15,6 @@ type Product {
 }
 
 type Query {
+  product(id: Int!): Product!
   products: [Product]!
 }

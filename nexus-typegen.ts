@@ -50,7 +50,8 @@ export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars
 
 export interface NexusGenFieldTypes {
   Mutation: { // field return type
-    addProduct: NexusGenRootTypes['Product']; // Product!
+    createProduct: NexusGenRootTypes['Product']; // Product!
+    destroyProduct: NexusGenRootTypes['Product']; // Product!
   }
   Product: { // field return type
     id: number; // Int!
@@ -59,13 +60,15 @@ export interface NexusGenFieldTypes {
     price: string; // String!
   }
   Query: { // field return type
+    product: NexusGenRootTypes['Product']; // Product!
     products: Array<NexusGenRootTypes['Product'] | null>; // [Product]!
   }
 }
 
 export interface NexusGenFieldTypeNames {
   Mutation: { // field return type name
-    addProduct: 'Product'
+    createProduct: 'Product'
+    destroyProduct: 'Product'
   }
   Product: { // field return type name
     id: 'Int'
@@ -74,16 +77,25 @@ export interface NexusGenFieldTypeNames {
     price: 'String'
   }
   Query: { // field return type name
+    product: 'Product'
     products: 'Product'
   }
 }
 
 export interface NexusGenArgTypes {
   Mutation: {
-    addProduct: { // args
+    createProduct: { // args
       image: string; // String!
       name: string; // String!
       price: string; // String!
+    }
+    destroyProduct: { // args
+      id: number; // Int!
+    }
+  }
+  Query: {
+    product: { // args
+      id: number; // Int!
     }
   }
 }

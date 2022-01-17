@@ -1,4 +1,4 @@
-import { objectType, extendType, nonNull, stringArg } from 'nexus'
+import { objectType, extendType, nonNull, stringArg, intArg } from 'nexus'
 
 export const Product = objectType({
   name: 'Product',
@@ -15,19 +15,27 @@ export const ProductQuery = extendType({
   definition(type) {
     type.nonNull.list.field("products", {
       type: "Product",
-      resolve(parent, args, context) {
-        return context.prisma.product.findMany()
+      resolve(parent, args, { prisma }) {
+        return prisma.product.findMany()
       }
-    })
+    }),
+    type.nonNull.field("product", {
+      type: "Product",
+      args: {
+        id: nonNull(intArg())
+      },
+      async resolve(_, args, { prisma }) {
+        return await prisma.product.findUnique({
+          where: {
+            id: args.id
+          }
+        });
+      }
+    });
   }
 });
 
 /* TODO 
-  type Query {
-    # Fetch a single link by its `id`
-    link(id: ID!): Link
-  }
-
   type Mutation {
     # Update a link
     updateLink(id: ID!, url: String, description: String): Link!
@@ -40,7 +48,7 @@ export const ProductQuery = extendType({
 export const ProductMutation = extendType({
   type: "Mutation",
   definition(type) {
-    type.nonNull.field("addProduct", {
+    type.nonNull.field("createProduct", {
       type: "Product",
       args: {
         name: nonNull(stringArg()),
@@ -56,6 +64,19 @@ export const ProductMutation = extendType({
 
         return createdProduct;
       }
-    })
+    }),
+    type.nonNull.field("destroyProduct", {
+      type: "Product",
+      args: {
+        id: nonNull(intArg())
+      },
+      async resolve(_, args, { prisma }) {
+        return await prisma.product.delete({
+          where: {
+            id: args.id
+          }
+        });
+      }
+    });
   }
 });
