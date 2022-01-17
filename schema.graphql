@@ -2,6 +2,17 @@
 ### Do not make changes to this file directly
 
 
+type Mutation {
+  addProduct(image: String!, name: String!, price: String!): Product!
+}
+
+type Product {
+  id: Int!
+  image: String!
+  name: String!
+  price: String!
+}
+
 type Query {
-  ok: Boolean!
+  products: [Product]!
 }
