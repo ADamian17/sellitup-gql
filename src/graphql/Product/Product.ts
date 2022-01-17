@@ -1,4 +1,5 @@
 import { objectType, extendType, nonNull, stringArg, intArg } from 'nexus'
+import { formatCurrency } from '../../utils';
 
 export const Product = objectType({
   name: 'Product',
@@ -43,12 +44,12 @@ export const ProductMutation = extendType({
       args: {
         name: nonNull(stringArg()),
         image: nonNull(stringArg()),
-        price: nonNull(stringArg())
+        price: nonNull(intArg())
       },
       async resolve(parent, args, context) {
         const createdProduct = await context.prisma.product.create({
           data: {
-            ...args
+            ...args,
           }
         });
 
@@ -61,7 +62,7 @@ export const ProductMutation = extendType({
         id: nonNull(intArg()),
         name: nonNull(stringArg()),
         image: nonNull(stringArg()),
-        price: nonNull(stringArg())
+        price: nonNull(intArg())
       },
       async resolve(_, args, { prisma }) {
         return await prisma.product.update({

@@ -89,7 +89,7 @@ export interface NexusGenArgTypes {
     createProduct: { // args
       image: string; // String!
       name: string; // String!
-      price: string; // String!
+      price: number; // Int!
     }
     destroyProduct: { // args
       id: number; // Int!
@@ -98,7 +98,7 @@ export interface NexusGenArgTypes {
       id: number; // Int!
       image: string; // String!
       name: string; // String!
-      price: string; // String!
+      price: number; // Int!
     }
   }
   Query: {
