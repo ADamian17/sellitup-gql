@@ -5,6 +5,7 @@
 type Mutation {
   createProduct(image: String!, name: String!, price: String!): Product!
   destroyProduct(id: Int!): Product!
+  updateProduct(id: Int!, image: String!, name: String!, price: String!): Product!
 }
 
 type Product {

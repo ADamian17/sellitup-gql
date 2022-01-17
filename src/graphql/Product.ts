@@ -15,8 +15,8 @@ export const ProductQuery = extendType({
   definition(type) {
     type.nonNull.list.field("products", {
       type: "Product",
-      resolve(parent, args, { prisma }) {
-        return prisma.product.findMany()
+      async resolve(parent, args, { prisma }) {
+        return await prisma.product.findMany()
       }
     }),
     type.nonNull.field("product", {
@@ -35,16 +35,6 @@ export const ProductQuery = extendType({
   }
 });
 
-/* TODO 
-  type Mutation {
-    # Update a link
-    updateLink(id: ID!, url: String, description: String): Link!
-
-    # Delete a link
-    deleteLink(id: ID!): Link!
-  }
-*/
-
 export const ProductMutation = extendType({
   type: "Mutation",
   definition(type) {
@@ -55,8 +45,8 @@ export const ProductMutation = extendType({
         image: nonNull(stringArg()),
         price: nonNull(stringArg())
       },
-      resolve(parent, args, context) {
-        const createdProduct = context.prisma.product.create({
+      async resolve(parent, args, context) {
+        const createdProduct = await context.prisma.product.create({
           data: {
             ...args
           }
@@ -65,6 +55,25 @@ export const ProductMutation = extendType({
         return createdProduct;
       }
     }),
+    type.nonNull.field("updateProduct", {
+      type: "Product",
+      args: {
+        id: nonNull(intArg()),
+        name: nonNull(stringArg()),
+        image: nonNull(stringArg()),
+        price: nonNull(stringArg())
+      },
+      async resolve(_, args, { prisma }) {
+        return await prisma.product.update({
+          where: {
+            id: args.id
+          },
+          data: {
+            ...args
+          }
+        });
+      }
+    });
     type.nonNull.field("destroyProduct", {
       type: "Product",
       args: {
