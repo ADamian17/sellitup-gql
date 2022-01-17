@@ -1,5 +1,4 @@
 import { objectType, extendType, nonNull, stringArg, intArg } from 'nexus'
-import { formatCurrency } from '../../utils';
 
 export const Product = objectType({
   name: 'Product',
