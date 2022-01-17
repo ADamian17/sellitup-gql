@@ -16,7 +16,7 @@ export const ProductQuery = extendType({
     type.nonNull.list.field("products", {
       type: "Product",
       resolve(parent, args, context) {
-        return []
+        return context.prisma.product.findMany()
       }
     })
   }
@@ -48,9 +48,13 @@ export const ProductMutation = extendType({
         price: nonNull(stringArg())
       },
       resolve(parent, args, context) {
-        return {
-          ...args
-        }
+        const createdProduct = context.prisma.product.create({
+          data: {
+            ...args
+          }
+        });
+
+        return createdProduct;
       }
     })
   }
