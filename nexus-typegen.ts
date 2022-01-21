@@ -5,8 +5,23 @@
 
 
 import type { Context } from "./src/context"
-
-
+import type { core } from "nexus"
+declare global {
+  interface NexusGenCustomInputMethods<TypeName extends string> {
+    /**
+     * A date string, such as 2007-12-03, compliant with the `full-date` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
+     */
+    date<FieldName extends string>(fieldName: FieldName, opts?: core.CommonInputFieldConfig<TypeName, FieldName>): void // "Date";
+  }
+}
+declare global {
+  interface NexusGenCustomOutputMethods<TypeName extends string> {
+    /**
+     * A date string, such as 2007-12-03, compliant with the `full-date` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
+     */
+    date<FieldName extends string>(fieldName: FieldName, ...opts: core.ScalarOutSpread<TypeName, FieldName>): void // "Date";
+  }
+}
 
 
 declare global {
@@ -25,11 +40,13 @@ export interface NexusGenScalars {
   Float: number
   Boolean: boolean
   ID: string
+  Date: any
 }
 
 export interface NexusGenObjects {
   Mutation: {};
   Product: { // root type
+    createdAt: NexusGenScalars['Date']; // Date!
     id: number; // Int!
     image: string; // String!
     name: string; // String!
@@ -55,6 +72,7 @@ export interface NexusGenFieldTypes {
     updateProduct: NexusGenRootTypes['Product']; // Product!
   }
   Product: { // field return type
+    createdAt: NexusGenScalars['Date']; // Date!
     id: number; // Int!
     image: string; // String!
     name: string; // String!
@@ -73,6 +91,7 @@ export interface NexusGenFieldTypeNames {
     updateProduct: 'Product'
   }
   Product: { // field return type name
+    createdAt: 'Date'
     id: 'Int'
     image: 'String'
     name: 'String'

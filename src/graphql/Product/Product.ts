@@ -7,6 +7,7 @@ export const Product = objectType({
     type.nonNull.string("name");
     type.nonNull.string("image");
     type.nonNull.string("price");
+    type.nonNull.date("createdAt");
   }
 });
 
@@ -19,19 +20,19 @@ export const ProductQuery = extendType({
         return await prisma.product.findMany()
       }
     }),
-    type.nonNull.field("product", {
-      type: "Product",
-      args: {
-        id: nonNull(intArg())
-      },
-      async resolve(_, args, { prisma }) {
-        return await prisma.product.findUnique({
-          where: {
-            id: args.id
-          }
-        });
-      }
-    });
+      type.nonNull.field("product", {
+        type: "Product",
+        args: {
+          id: nonNull(intArg())
+        },
+        async resolve(_, args, { prisma }) {
+          return await prisma.product.findUnique({
+            where: {
+              id: args.id
+            }
+          });
+        }
+      });
   }
 });
 
@@ -55,25 +56,25 @@ export const ProductMutation = extendType({
         return createdProduct;
       }
     }),
-    type.nonNull.field("updateProduct", {
-      type: "Product",
-      args: {
-        id: nonNull(intArg()),
-        name: nonNull(stringArg()),
-        image: nonNull(stringArg()),
-        price: nonNull(intArg())
-      },
-      async resolve(_, args, { prisma }) {
-        return await prisma.product.update({
-          where: {
-            id: args.id
-          },
-          data: {
-            ...args
-          }
-        });
-      }
-    });
+      type.nonNull.field("updateProduct", {
+        type: "Product",
+        args: {
+          id: nonNull(intArg()),
+          name: nonNull(stringArg()),
+          image: nonNull(stringArg()),
+          price: nonNull(intArg())
+        },
+        async resolve(_, args, { prisma }) {
+          return await prisma.product.update({
+            where: {
+              id: args.id
+            },
+            data: {
+              ...args
+            }
+          });
+        }
+      });
     type.nonNull.field("destroyProduct", {
       type: "Product",
       args: {
