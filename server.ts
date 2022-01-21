@@ -16,6 +16,7 @@ export const server = new ApolloServer({
   ]
 });
 
+// binding port
 server.listen({ port: PORT }).then(({ url }) => {
   console.log(`🚀  Server ready at ${url}`);
 });
