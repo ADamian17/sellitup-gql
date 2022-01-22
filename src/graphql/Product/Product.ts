@@ -7,7 +7,9 @@ export const Product = objectType({
     type.nonNull.string("name");
     type.nonNull.string("image");
     type.nonNull.string("price");
-    type.nonNull.date("createdAt");
+    type.nonNull.field("createdAt", {
+      type: "Date"
+    });
   }
 });
 
