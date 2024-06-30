@@ -1,16 +1,16 @@
-import { objectType, extendType, nonNull, stringArg, intArg } from 'nexus'
+import { objectType, extendType, nonNull, stringArg, intArg } from "nexus";
 
 export const Product = objectType({
-  name: 'Product',
+  name: "Product",
   definition(type) {
     type.nonNull.int("id");
-    type.nonNull.string("name");
+    type.nonNull.string("name", { description: "Product name" });
     type.nonNull.string("image");
     type.nonNull.string("price");
     type.nonNull.field("createdAt", {
-      type: "Date"
+      type: "Date",
     });
-  }
+  },
 });
 
 export const ProductQuery = extendType({
@@ -18,24 +18,26 @@ export const ProductQuery = extendType({
   definition(type) {
     type.nonNull.list.field("products", {
       type: "Product",
-      async resolve(parent, args, { prisma }) {
-        return await prisma.product.findMany()
-      }
-    }),
-      type.nonNull.field("product", {
-        type: "Product",
-        args: {
-          id: nonNull(intArg())
-        },
-        async resolve(_, args, { prisma }) {
-          return await prisma.product.findUnique({
-            where: {
-              id: args.id
-            }
-          });
-        }
-      });
-  }
+      args: {},
+      async resolve(_, __, { prisma }) {
+        return await prisma.product.findMany();
+      },
+    });
+
+    type.nonNull.field("product", {
+      type: "Product",
+      args: {
+        id: nonNull(intArg()),
+      },
+      async resolve(_, args, { prisma }) {
+        return await prisma.product.findUnique({
+          where: {
+            id: args.id,
+          },
+        });
+      },
+    });
+  },
 });
 
 export const ProductMutation = extendType({
@@ -46,49 +48,51 @@ export const ProductMutation = extendType({
       args: {
         name: nonNull(stringArg()),
         image: nonNull(stringArg()),
-        price: nonNull(intArg())
+        price: nonNull(intArg()),
       },
-      async resolve(parent, args, context) {
+      async resolve(_, args, context) {
         const createdProduct = await context.prisma.product.create({
           data: {
             ...args,
-          }
+          },
         });
 
         return createdProduct;
-      }
-    }),
-      type.nonNull.field("updateProduct", {
-        type: "Product",
-        args: {
-          id: nonNull(intArg()),
-          name: nonNull(stringArg()),
-          image: nonNull(stringArg()),
-          price: nonNull(intArg())
-        },
-        async resolve(_, args, { prisma }) {
-          return await prisma.product.update({
-            where: {
-              id: args.id
-            },
-            data: {
-              ...args
-            }
-          });
-        }
-      });
+      },
+    });
+
+    type.nonNull.field("updateProduct", {
+      type: "Product",
+      args: {
+        id: nonNull(intArg()),
+        name: nonNull(stringArg()),
+        image: nonNull(stringArg()),
+        price: nonNull(intArg()),
+      },
+      async resolve(_, args, { prisma }) {
+        return await prisma.product.update({
+          where: {
+            id: args.id,
+          },
+          data: {
+            ...args,
+          },
+        });
+      },
+    });
+
     type.nonNull.field("destroyProduct", {
       type: "Product",
       args: {
-        id: nonNull(intArg())
+        id: nonNull(intArg()),
       },
       async resolve(_, args, { prisma }) {
         return await prisma.product.delete({
           where: {
-            id: args.id
-          }
+            id: args.id,
+          },
         });
-      }
+      },
     });
-  }
+  },
 });

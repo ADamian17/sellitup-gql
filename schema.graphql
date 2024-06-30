@@ -17,6 +17,8 @@ type Product {
   createdAt: Date!
   id: Int!
   image: String!
+
+  """Product name"""
   name: String!
   price: String!
 }
